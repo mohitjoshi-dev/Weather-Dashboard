@@ -1,5 +1,15 @@
 import { Card } from "@/components/ui/card";
 
+import CurrentWeather from "../weather/CurrentWeather";
+
+import DashboardHeader from "../weather/DashboardHeader";
+
+import Highlights from "../weather/Highlights";
+
+import Forecast from "../weather/Forecast";
+
+import WeatherMap from "../weather/WeatherMap";
+
 function MainContent() {
   return (
     <main className="flex-1">
@@ -8,19 +18,27 @@ function MainContent() {
 
         {/* Current Weather */}
 
-        <Card className="h-[380px] rounded-3xl bg-slate-900 border-slate-800" />
+        <CurrentWeather className="h-95 rounded-3xl bg-card border border-border shadow-xl hover:shadow-2xl transition-all duration-300" />
 
         {/* Highlights */}
 
-        <Card className="lg:col-span-2 h-[380px] rounded-3xl bg-slate-900 border-slate-800" />
-
+       <div className="lg:col-span-2">
+          <DashboardHeader />
+       </div>
         {/* Forecast */}
 
-        <Card className="h-[320px] rounded-3xl bg-slate-900 border-slate-800" />
+        <Highlights />
 
         {/* Map */}
 
-        <Card className="lg:col-span-2 h-[320px] rounded-3xl bg-slate-900 border-slate-800" />
+        <div>
+          <Forecast />
+        </div>
+
+
+        <div className="lg:col-span-2">
+          <WeatherMap />
+        </div>
 
       </div>
 
