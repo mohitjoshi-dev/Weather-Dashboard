@@ -2,9 +2,14 @@ import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import useWeather from "@/hooks/useWeather";
-import { searchLocations } from "@/api/weather";
+import { searchLocations } from "@/api/geocode";
 
-function DashboardHeader({ city, setCity }) {
+function DashboardHeader({
+  city,
+  setCity,
+  setDisplayLocation,
+}) {
+  
 const [search, setSearch] = useState(city);
 const [suggestions, setSuggestions] = useState([]);
 
@@ -83,10 +88,18 @@ if (hour >= 5 && hour < 12) {
   value={search}
   onChange={(e) => setSearch(e.target.value)}
   onKeyDown={(e) => {
-    if (e.key === "Enter") {
+  if (e.key === "Enter") {
+    if (suggestions.length > 0) {
+      const first = suggestions[0];
+
+      setCity(`${first.lat},${first.lon}`);
+      setDisplayLocation(first.name);
+      setSearch(first.name);
+    } else {
       setCity(search.trim());
-      setSearch("");
-      setSuggestions([]);
+    }
+
+    setSuggestions([]);
     }
   }}
   placeholder="Search city, locality, airport..."
@@ -104,6 +117,7 @@ if (hour >= 5 && hour < 12) {
         type="button"
         onClick={() => {
           setCity(`${location.lat},${location.lon}`);
+          setDisplayLocation(location.name);
           setSearch(location.name);
           setSuggestions([]);
         }}
