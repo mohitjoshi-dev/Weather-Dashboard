@@ -1,9 +1,40 @@
 import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
+import useWeather from "@/hooks/useWeather";
 
 function DashboardHeader({ city, setCity }) {
 const [search, setSearch] = useState(city);
+
+const { weather, loading, error } = useWeather(city);
+
+if (loading) return null;
+if (error) return null;
+
+const hour = new Date(weather.location.localtime).getHours();
+
+const condition = weather.current.condition.text.toLowerCase();
+
+let weatherEmoji = "☀️";
+
+if (condition.includes("cloud")) weatherEmoji = "☁️";
+else if (condition.includes("rain")) weatherEmoji = "🌧️";
+else if (condition.includes("mist")) weatherEmoji = "🌫️";
+else if (condition.includes("snow")) weatherEmoji = "❄️";
+else if (condition.includes("thunder")) weatherEmoji = "⛈️";
+
+let greeting = "";
+
+if (hour >= 5 && hour < 12) {
+  greeting = "Good Morning";
+} else if (hour >= 12 && hour < 17) {
+  greeting = "Good Afternoon";
+} else if (hour >= 17 && hour < 21) {
+  greeting = "Good Evening";
+} else {
+  greeting = "Good Night";
+}
+
 
  return (
     <Card className="h-full rounded-3xl border border-border bg-card p-10">
@@ -14,7 +45,7 @@ const [search, setSearch] = useState(city);
 
         <div>
             <p className="text-xs uppercase tracking-[0.35em] text-primary">
-            Weather Dashboard
+            LIVE WEATHER DASHBOARD
             </p>
 
             <h1 className="mt-3 text-4xl font-bold text-foreground">
@@ -22,7 +53,8 @@ const [search, setSearch] = useState(city);
             </h1>
         </div>
 
-        <div className="flex w-110 items-center gap-3 rounded-2xl border border-border bg-background px-5 py-4 transition-all focus-within:border-primary">
+        <div className="flex w-110 items-center gap-3 rounded-2xl border border-border bg-background px-5 py-4 transition-all 
+                        focus-within:border-primary focus-within:shadow-lg focus-within:shadow-primary/20">
             <Search className="h-5 w-5 text-muted-foreground" />
 
             <input
@@ -49,15 +81,16 @@ const [search, setSearch] = useState(city);
 <div className="space-y-6">
 
     <div>
-        <h2 className="text-3xl font-semibold text-foreground">
-             Good Evening{" "}
+        <h2 className="text-3xl font-bold tracking-tight text-foreground">
+              {weatherEmoji} {greeting}{" "}
         <span className="wave inline-block origin-[70%_70%]">
             👋
         </span>
         </h2>
 
         <p className="mt-2 text-muted-foreground">
-            Welcome back! Here's today's weather overview.
+         Currently {weather.current.condition.text.toLowerCase()} in{" "}
+         {weather.location.name}.
         </p>
     </div>
 
@@ -69,7 +102,7 @@ const [search, setSearch] = useState(city);
             </p>
 
             <p className="mt-1 text-lg text-foreground">
-                New Delhi
+            {weather.location.name}, {weather.location.country}
             </p>
         </div>
 
@@ -79,8 +112,15 @@ const [search, setSearch] = useState(city);
             </p>
 
             <p className="mt-1 text-lg text-foreground">
-                2:32 PM
+                {new Date(weather.location.localtime).toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+                })}
+                
             </p>
+                
+
         </div>
 
         <div>
@@ -89,7 +129,11 @@ const [search, setSearch] = useState(city);
             </p>
 
             <p className="mt-1 text-lg text-foreground">
-                July 1, 2026
+                {new Date(weather.location.localtime).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+                })}
             </p>
         </div>
 
