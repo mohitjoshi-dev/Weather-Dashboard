@@ -5,11 +5,16 @@ import Forecast from "../weather/Forecast";
 import WeeklyForecast from "../weather/WeeklyForecast";
 import WeatherMap from "../weather/WeatherMap";
 import AirQuality from "../weather/AirQuality";
-
-import { useState } from "react";
+ 
+import { useState, useEffect } from "react";
 
 function MainContent() {
-  const [city, setCity] = useState("New Delhi");
+  const [city, setCity] = useState(
+  localStorage.getItem("lastCity") || "New Delhi");
+
+   useEffect(() => {
+          localStorage.setItem("lastCity", city);
+    }, [city]);
 
   return (
     <main className="flex-1">
@@ -42,9 +47,9 @@ function MainContent() {
           <WeeklyForecast city={city} />
         </div>
 
-        {/* Weather Map */}
-        <div className="lg:col-span-2">
-          <WeatherMap />
+        {/* Maps */}
+        <div className="lg:col-span-3">
+          <WeatherMap city={city} />
         </div>
 
       </div>

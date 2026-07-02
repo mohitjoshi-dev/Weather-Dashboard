@@ -29,6 +29,43 @@ function AQIItem({ label, value }) {
   );
 
 }
+function getAQIAdvice(aqi) {
+
+  if (aqi <= 50) {
+    return {
+      positive: "Perfect day for outdoor activities.",
+      caution: "No special precautions required.",
+    };
+  }
+
+  if (aqi <= 100) {
+    return {
+      positive: "Air quality is acceptable for most people.",
+      caution: "Sensitive groups should reduce prolonged outdoor exertion.",
+    };
+  }
+
+  if (aqi <= 150) {
+    return {
+      positive: "Most people can continue outdoor activities.",
+      caution: "Children, seniors and asthma patients should limit prolonged exposure.",
+    };
+  }
+
+  if (aqi <= 200) {
+    return {
+      positive: "Keep outdoor activities short.",
+      caution: "Avoid prolonged outdoor exercise.",
+    };
+  }
+
+  return {
+    positive: "Stay indoors whenever possible.",
+    caution: "Avoid all unnecessary outdoor activities.",
+  };
+
+}
+
 function getAQIStatus(aqi) {
   if (aqi <= 50) {
     return {
@@ -79,11 +116,12 @@ function AirQuality({ city }) {
   if (error) return null;
 
   const air = weather.current.air_quality;
-  const aqi = 55;
+  const aqi = Math.round(air.pm2_5 * 1.8);
   const status = getAQIStatus(aqi);
+  const advice = getAQIAdvice(aqi);
 
   return (
-
+    <section id="aqi">
     <Card className="rounded-3xl border border-border bg-card p-6 min-h-92.5">
 
       <p className="text-xs uppercase tracking-[0.35em] text-primary">
@@ -92,7 +130,11 @@ function AirQuality({ city }) {
 
      <div className="flex-1 mt-4 grid grid-cols-[170px_1fr] gap-8 items-center">
     
-    <AQIGauge value={55} />
+    <AQIGauge
+      value={aqi}
+      status={status.title}
+      color={status.color}
+    />
 
     <div className="grid grid-cols-2 gap-y-6">
 
@@ -127,7 +169,7 @@ function AirQuality({ city }) {
       />
 
       <p className="text-sm text-muted-foreground">
-        Outdoor activities are safe.
+        {advice.positive}
       </p>
 
     </div>
@@ -139,7 +181,7 @@ function AirQuality({ city }) {
       />
 
       <p className="text-sm text-muted-foreground">
-        Sensitive groups should reduce prolonged outdoor exertion.
+        {advice.caution}
       </p>
 
     </div>
@@ -150,6 +192,7 @@ function AirQuality({ city }) {
 
 
     </Card>
+    </section>
 
   );
 }

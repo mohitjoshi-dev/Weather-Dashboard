@@ -1,12 +1,32 @@
 import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useWeather from "@/hooks/useWeather";
+import { searchLocations } from "@/api/weather";
 
 function DashboardHeader({ city, setCity }) {
 const [search, setSearch] = useState(city);
+const [suggestions, setSuggestions] = useState([]);
 
 const { weather, loading, error } = useWeather(city);
+useEffect(() => {
+  if (search.trim().length < 2) {
+    setSuggestions([]);
+    return;
+  }
+
+  const timer = setTimeout(async () => {
+    try {
+      const data = await searchLocations(search);
+      setSuggestions(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, 300);
+
+  return () => clearTimeout(timer);
+}, [search]);
+
 
 if (loading) return null;
 if (error) return null;
@@ -49,27 +69,72 @@ if (hour >= 5 && hour < 12) {
             </p>
 
             <h1 className="mt-3 text-4xl font-bold text-foreground">
-            Current Conditions
+            Current <br></br>
+            Conditions
             </h1>
         </div>
 
-        <div className="flex w-110 items-center gap-3 rounded-2xl border border-border bg-background px-5 py-4 transition-all 
+        <div className="relative flex w-110 items-center gap-3 rounded-2xl border border-border bg-background px-5 py-4 transition-all 
                         focus-within:border-primary focus-within:shadow-lg focus-within:shadow-primary/20">
             <Search className="h-5 w-5 text-muted-foreground" />
 
             <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => {
-               if (e.key === "Enter") {
-               setCity(search.trim());
-               setSearch("");}
-            }}
-            placeholder="Search city..."
-            className="w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
-            />
+  type="text"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      setCity(search.trim());
+      setSearch("");
+      setSuggestions([]);
+    }
+  }}
+  placeholder="Search city, locality, airport..."
+  className="w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
+/>
+
+{suggestions.length > 0 && (
+
+  <div className="absolute left-0 top-[110%] z-50 w-full overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+
+    {suggestions.map((location) => (
+
+      <button
+        key={`${location.name}-${location.lat}-${location.lon}`}
+        type="button"
+        onClick={() => {
+          setCity(`${location.lat},${location.lon}`);
+          setSearch(location.name);
+          setSuggestions([]);
+        }}
+        className="flex w-full items-start gap-3 border-b border-border/40 px-5 py-4 text-left transition-colors hover:bg-primary/10 last:border-b-0"
+      >
+
+        <span className="mt-1 text-lg">
+          📍
+        </span>
+
+        <div>
+
+          <p className="font-medium text-foreground">
+            {location.name}
+          </p>
+
+          <p className="text-sm text-muted-foreground">
+            {location.region}, {location.country}
+          </p>
+
         </div>
+
+      </button>
+
+        ))}
+
+    </div>
+
+    )}
+
+</div>
 
         </div>
 

@@ -6,7 +6,8 @@ function Sidebar() {
 const { theme, toggleTheme } = useTheme();
 
   return (
-    <aside className="flex h-[102vh] w-22 flex-col items-center justify-between rounded-3xl border border-border bg-card py-6 shadow-xl">
+    
+    <aside className="sticky top-0 flex h-screen w-22 flex-col items-center justify-between border-r border-border bg-card py-6 shadow-xl">
 
       {/* Logo */}
       <div className="rounded-2xl bg-primary p-3">
@@ -16,11 +17,23 @@ const { theme, toggleTheme } = useTheme();
       {/* Navigation */}
       <div className="flex flex-col gap-7">
 
-        <button className="rounded-xl bg-primary p-3 text-foreground transition hover:scale-110">
+        <button
+          onClick={() =>
+            document.getElementById("home")?.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
+          className="rounded-xl bg-primary p-3 text-foreground transition hover:scale-110" >
           <House size={22} />
         </button>
 
-        <button className="rounded-xl p-3 text-slate-400 transition  hover:bg-secondary hover:text-foreground">
+        <button
+          onClick={() =>
+            document.getElementById("maps")?.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
+          className="rounded-xl p-3 text-slate-400 transition hover:bg-secondary hover:text-foreground">
           <MapPinned size={22} />
         </button>
 
@@ -34,7 +47,13 @@ const { theme, toggleTheme } = useTheme();
         )}
         </button>
 
-        <button className="rounded-xl p-3 text-slate-400 transition  hover:bg-secondary hover:text-foreground">
+        <button
+          onClick={() =>
+            document.getElementById("settings")?.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
+          className="rounded-xl p-3 text-slate-400 transition hover:bg-secondary hover:text-foreground" >
           <Settings size={22} />
         </button>
 
