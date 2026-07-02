@@ -12,12 +12,12 @@ function WeatherMap() {
         Weather Map
       </p>
 
-      <div className="mt-5 h-[420px] overflow-hidden rounded-2xl">
+      <div className="mt-5 h-105 overflow-hidden rounded-2xl">
 
         <MapContainer
           center={position}
           zoom={10}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
           className="h-full w-full"
         >
           <TileLayer

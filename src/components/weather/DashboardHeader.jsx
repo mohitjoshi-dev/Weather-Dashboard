@@ -1,8 +1,11 @@
 import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useState } from "react";
 
-function DashboardHeader() {
-  return (
+function DashboardHeader({ city, setCity }) {
+const [search, setSearch] = useState(city);
+
+ return (
     <Card className="h-full rounded-3xl border border-border bg-card p-10">
 
     <div className="flex h-full flex-col justify-between">
@@ -24,6 +27,13 @@ function DashboardHeader() {
 
             <input
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+               if (e.key === "Enter") {
+               setCity(search.trim());
+               setSearch("");}
+            }}
             placeholder="Search city..."
             className="w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
             />
