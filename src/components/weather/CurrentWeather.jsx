@@ -1,8 +1,19 @@
 import { Card } from "@/components/ui/card";
 import { CloudSun } from "lucide-react";
+import useWeather from "@/hooks/useWeather";
 
+function CurrentWeather({ city }) {
 
-function CurrentWeather() {
+  const { weather, loading, error } = useWeather(city);
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (error) {
+      return <div>{error}</div>;
+    }
+
   return (
     <Card className="h-full rounded-3xl bg-card border border-border p-9">      
       
@@ -16,7 +27,7 @@ function CurrentWeather() {
     
       <div className="flex items-start justify-between">
         <div className="text-2xl font-bold text-foreground leading-tight">
-          Partly<br />Cloudy
+          {weather.current.condition.text}
         </div>
 
         
@@ -24,7 +35,10 @@ function CurrentWeather() {
           <div className="text-xs uppercase tracking-widest text-muted-foreground">
               High / Low
           </div>
-          <div className="text-xl font-medium text-foreground"> 36°/24°</div>
+          <div className="text-xl font-medium text-foreground">
+            {Math.round(weather.forecast.forecastday[0].day.maxtemp_c)}° /
+            {Math.round(weather.forecast.forecastday[0].day.mintemp_c)}°
+          </div>
         </div>
       </div>
 
@@ -32,13 +46,13 @@ function CurrentWeather() {
       {/* Row 2: City & Humidity */}
      
       <div className="flex items-center justify-between">
-        <div className="text-2xl text-muted-foreground">New Delhi</div>
+        <div className="text-2xl text-muted-foreground">{weather.location.name}</div>
         <div className="text-right">
        <div className="text-xs uppercase tracking-widest text-muted-foreground">
-            Humidity
+           HUMIDITY
         </div>
         <p className="text-2xl font-semibold text-primary">
-          58%
+          {weather.current.humidity}%
         </p>    
        </div>
       </div>
@@ -49,16 +63,16 @@ function CurrentWeather() {
       {/* Row 3: Big Temp & Wind */}
      
       <div className="flex items-center justify-between">
-        <div className="text-7xl font-bold tracking-tight text-foreground">31°</div>
+        <div className="text-7xl font-bold tracking-tight text-foreground">{Math.round(weather.current.temp_c)}°</div>
         <div className="text-right">
-          <div className="text-sm text-muted-foreground">Wind</div>
-          <div className="text-xl font-medium text-primary">14 km/h</div>
+          <div className="text-sm text-muted-foreground">WIND</div>
+          <div className="text-xl font-medium text-primary">{weather.current.wind_kph} km/h</div>
         </div>
       </div>
 
       {/* Feels Like */}
     
-      <p className="text-base text-muted-foreground">Feels like 34°</p>
+      <p className="text-base text-muted-foreground">Feels like {Math.round(weather.current.feelslike_c)}°</p>
 
       </div>
 

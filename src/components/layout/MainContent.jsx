@@ -10,7 +10,11 @@ import Forecast from "../weather/Forecast";
 
 import WeatherMap from "../weather/WeatherMap";
 
+import { useState } from "react";
+
 function MainContent() {
+  const [city, setCity] = useState("New Delhi");
+
   return (
     <main className="flex-1">
 
@@ -18,21 +22,24 @@ function MainContent() {
 
         {/* Current Weather */}
 
-        <CurrentWeather className="h-95 rounded-3xl bg-card border border-border shadow-xl hover:shadow-2xl transition-all duration-300" />
-
+        <CurrentWeather city={city} />
+         
         {/* Highlights */}
 
        <div className="lg:col-span-2">
-          <DashboardHeader />
+          <DashboardHeader 
+           city={city}
+            setCity={setCity}/>
        </div>
         {/* Forecast */}
 
-        <Highlights />
+        <Highlights city={city} />
 
         {/* Map */}
 
         <div>
-          <Forecast />
+          <div className="lg:col-span-3"></div>
+          <Forecast city={city} />
         </div>
 
 

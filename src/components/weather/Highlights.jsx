@@ -1,12 +1,13 @@
 import { Card } from "@/components/ui/card";
-import {
-  Droplets,
-  Wind,
-  Sun,
-  Gauge,
-} from "lucide-react";
+import {Droplets, Wind, Sun, Gauge,} from "lucide-react";
+import useWeather from "@/hooks/useWeather";
 
-function Highlights() {
+function Highlights({city}) {
+const { weather, loading, error } = useWeather(city);
+
+if (loading) return <div>Loading...</div>;
+if (error) return <div>{error}</div>;
+
   return (
     <div className="grid h-full grid-cols-2 gap-5">
 
@@ -20,14 +21,17 @@ function Highlights() {
         </p>
 
         <h2 className="mt-3 text-4xl font-bold">
-            58%
+          {weather.current.humidity}%        
         </h2>
 
         {/* Progress Bar */}
 
         <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-border">
 
-            <div className="h-full w-[58%] rounded-full bg-cyan-400"></div>
+        <div
+          className="h-full rounded-full bg-cyan-400 transition-all"
+          style={{ width: `${weather.current.humidity}%` }}>
+        </div>
 
         </div>
 
@@ -43,16 +47,21 @@ function Highlights() {
         <Wind className="h-8 w-8 text-primary" />
 
         <p className="mt-6 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            Wind
+           Wind
         </p>
 
         <h2 className="mt-3 text-4xl font-bold">
-            14
+          {Math.round(weather.current.wind_kph)}
         </h2>
 
         <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-border">
 
-            <div className="h-full w-[35%] rounded-full bg-primary"></div>
+        <div
+          className="h-full rounded-full bg-primary transition-all"
+          style={{
+            width: `${Math.min(weather.current.wind_kph * 3, 100)}%`,
+          }}>
+        </div>
 
         </div>
 
@@ -71,11 +80,17 @@ function Highlights() {
         </p>
 
         <h2 className="mt-3 text-4xl font-bold text-foreground">
-          7
+          {weather.current.uv}
         </h2>
 
         <p className="mt-2 text-primary">
-          High
+         {weather.current.uv <= 2
+          ? "Low"
+          : weather.current.uv <= 5
+          ? "Moderate"
+          : weather.current.uv <= 7
+          ? "High"
+          : "Very High"}
         </p>
       </Card>
 
@@ -88,7 +103,7 @@ function Highlights() {
         </p>
 
         <h2 className="mt-3 text-4xl font-bold text-foreground">
-          1011
+         {Math.round(weather.current.pressure_mb)}
         </h2>
 
         <p className="mt-2 text-primary">
