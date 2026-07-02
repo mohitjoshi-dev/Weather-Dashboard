@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
-import { CloudSun } from "lucide-react";
-import useWeather from "@/hooks/useWeather";
+import { Droplets, Wind } from "lucide-react";
+ import useWeather from "@/hooks/useWeather";
+import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
 
 function CurrentWeather({ city }) {
 
@@ -21,7 +22,11 @@ function CurrentWeather({ city }) {
 
       {/* Cloud Logo */}
     
-      <CloudSun className="h-20 w-20 text-primary" />
+      <AnimatedWeatherIcon
+        condition={weather.current.condition.text}
+        isDay={weather.current.is_day}
+        size={90}
+      />
 
       {/* Row 1: Status & High/Low */}
     
@@ -46,14 +51,19 @@ function CurrentWeather({ city }) {
       {/* Row 2: City & Humidity */}
      
       <div className="flex items-center justify-between">
-        <div className="text-2xl text-muted-foreground">{weather.location.name}</div>
-        <div className="text-right">
-       <div className="text-xs uppercase tracking-widest text-muted-foreground">
-           HUMIDITY
+        <div className="text-2xl font-medium text-muted-foreground ">{weather.location.name}</div>
+        <div className="text-right mt-7">
+        <div className="flex items-center justify-end gap-2">
+          <Droplets className="h-6 w-6 text-cyan-400" />
+
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+            Humidity
+          </span>
         </div>
-        <p className="text-2xl font-semibold text-primary">
+
+        <p className="mt-1 text-2xl font-semibold text-primary">
           {weather.current.humidity}%
-        </p>    
+        </p>
        </div>
       </div>
 
@@ -65,9 +75,18 @@ function CurrentWeather({ city }) {
       <div className="flex items-center justify-between">
         <div className="text-7xl font-bold tracking-tight text-foreground">{Math.round(weather.current.temp_c)}°</div>
         <div className="text-right">
-          <div className="text-sm text-muted-foreground">WIND</div>
-          <div className="text-xl font-medium text-primary">{weather.current.wind_kph} km/h</div>
+        <div className="flex items-center justify-end gap-2">
+          <Wind className="h-7 w-7 text-primary" />
+
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+            Wind
+          </span>
         </div>
+
+        <p className="mt-1 text-xl font-medium text-primary">
+          {weather.current.wind_kph} km/h
+        </p>
+      </div>
       </div>
 
       {/* Feels Like */}

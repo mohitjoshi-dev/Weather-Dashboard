@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
-import {Cloud, CloudRain, Moon, Sun,} from "lucide-react";
-import useWeather from "@/hooks/useWeather";
-
+ import useWeather from "@/hooks/useWeather";
+import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
 
 
 {/* created array for easiness */}
@@ -15,8 +14,14 @@ if (error) return <div>{error}</div>;
 
 const currentHour = new Date().getHours();
 
-const hourlyForecast = weather.forecast.forecastday[0].hour
-  .slice(currentHour, currentHour + 4);
+const todayHours =
+  weather.forecast.forecastday[0].hour.slice(currentHour);
+
+const tomorrowHours =
+  weather.forecast.forecastday[1].hour;
+
+const hourlyForecast = [...todayHours, ...tomorrowHours].slice(0, 4);
+
 
   return (
     <Card className="h-full w-full rounded-3xl border border-border bg-card p-5">
@@ -48,11 +53,11 @@ const hourlyForecast = weather.forecast.forecastday[0].hour
             </div>
 
             <div className="my-5 h-14 flex items-center justify-center">
-            <img
-              src={`https:${item.condition.icon}`}
-              alt={item.condition.text}
-              className="h-12 w-12 object-contain"
-            />
+              <AnimatedWeatherIcon
+                condition={item.condition.text}
+                isDay={item.is_day}
+                size={index === 0 ? 110 : 100}
+              />
             </div>
 
             <h3 className="text-xl font-semibold">

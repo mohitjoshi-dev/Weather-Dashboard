@@ -7,7 +7,7 @@ console.log(API_KEY);
   console.log(city);
 
   const response = await fetch(
-   `${BASE_URL}/forecast.json?key=${API_KEY}&q=${city}&days=3&aqi=yes&alerts=no`
+   `${BASE_URL}/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=yes&alerts=no`
   );
 
   if (!response.ok) {
