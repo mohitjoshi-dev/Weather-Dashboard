@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-function AQIGauge({ value = 55 }) {
+function AQIGauge({ value, status, color }) {
 
   const radius = 72;
 
@@ -19,15 +19,51 @@ function AQIGauge({ value = 55 }) {
         height="180"
         className="-rotate-90"
       >
+        <defs>
 
+          <linearGradient
+            id="aqiGradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
+
+            <stop offset="0%" stopColor="#FFD84D" />
+
+            <stop offset="55%" stopColor="#F6A54A" />
+
+            <stop offset="100%" stopColor="#FF7E36" />
+
+          </linearGradient>
+
+          <filter id="aqiGlow">
+
+            <feGaussianBlur
+              stdDeviation="4"
+              result="blur"
+            />
+
+            <feMerge>
+
+              <feMergeNode in="blur" />
+
+              <feMergeNode in="SourceGraphic" />
+
+            </feMerge>
+
+          </filter>
+
+        </defs>
+        
         {/* Background */}
 
         <circle
           cx="90"
           cy="90"
           r={radius}
-          stroke="#31453E"
-          strokeWidth="10"
+          stroke="#33443F"
+          strokeWidth="11"
           fill="transparent"
         />
 
@@ -39,8 +75,10 @@ function AQIGauge({ value = 55 }) {
           cy="90"
           r={radius}
 
-          stroke="#F6A54A"
+          stroke="url(#aqiGradient)"
 
+          filter="url(#aqiGlow)"
+          
           strokeWidth="10"
 
           fill="transparent"
@@ -66,13 +104,13 @@ function AQIGauge({ value = 55 }) {
 
       </svg>
 
-      <div className="absolute text-center">
+      <div className="absolute flex flex-col items-center text-center">
 
-        <p className="text-sm text-muted-foreground">
-          Moderate
+        <p className={`rounded-full px-3 py-1 text-xs font-medium ${color} bg-current/10`}>
+          {status}
         </p>
 
-        <h2 className="mt-2 text-5xl font-bold text-primary">
+        <h2 className="mt-3 text-6xl font-black tracking-tight text-primary">
           {value}
         </h2>
 

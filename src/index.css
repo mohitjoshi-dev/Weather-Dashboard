@@ -49,8 +49,9 @@
 }
 
 :root {
+
    --background: #061511;
-   --foreground: #F4E9D6;
+
 
     --card: #112820;
     --card-foreground: #F4E9D6;
@@ -119,12 +120,62 @@
     --sidebar-ring: #D88A43;
 }
 
+.light,
+[data-theme="light"] {
+
+  --background: #F6F8FB;
+  --foreground: #15202B;
+
+  --card: #FFFFFF;
+  --card-foreground: #15202B;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #15202B;
+
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #EEF2F7;
+  --secondary-foreground: #15202B;
+
+  --muted: #F3F6F9;
+  --muted-foreground: #64748B;
+
+  --accent: #0EA5E9;
+  --accent-foreground: #FFFFFF;
+
+  --border: #E2E8F0;
+
+  --input: #FFFFFF;
+
+  --ring: #2563EB;
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #15202B;
+  --sidebar-primary: #2563EB;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EEF2F7;
+  --sidebar-accent-foreground: #15202B;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #2563EB;
+
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
     }
   body {
-    @apply bg-background text-foreground;
+  @apply bg-background text-foreground;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
+    }
+    * {
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    color 300ms ease;
     }
   html {
     @apply font-sans;

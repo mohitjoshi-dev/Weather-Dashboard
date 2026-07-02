@@ -16,6 +16,7 @@ function CurrentWeather({ city }) {
     }
 
   return (
+    <section id="home">
     <Card className="h-full rounded-3xl bg-card border border-border p-9">      
       
       <div className="flex h-full flex-col gap-6">
@@ -96,6 +97,7 @@ function CurrentWeather({ city }) {
       </div>
 
     </Card>
+    </section>
   );
 }
 
