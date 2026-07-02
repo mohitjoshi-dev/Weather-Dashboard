@@ -3,7 +3,7 @@ import { Droplets, Wind } from "lucide-react";
  import useWeather from "@/hooks/useWeather";
 import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
 
-function CurrentWeather({ city }) {
+function CurrentWeather({ city, displayLocation }) {
 
   const { weather, loading, error } = useWeather(city);
 
@@ -52,7 +52,7 @@ function CurrentWeather({ city }) {
       {/* Row 2: City & Humidity */}
      
       <div className="flex items-center justify-between">
-        <div className="text-2xl font-medium text-muted-foreground ">{weather.location.name}</div>
+        <div className="text-2xl font-medium text-muted-foreground ">{displayLocation}</div>
         <div className="text-right mt-7">
         <div className="flex items-center justify-end gap-2">
           <Droplets className="h-6 w-6 text-cyan-400" />
