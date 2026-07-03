@@ -16,7 +16,7 @@ function AQIMap({ lat, lon }) {
           center={[lat, lon]}
           zoom={10}
           scrollWheelZoom={true}
-          className="h-[420px] w-full rounded-2xl"
+          className="h-105 w-full rounded-2xl"
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

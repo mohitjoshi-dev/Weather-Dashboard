@@ -3,12 +3,14 @@ const API_KEY = import.meta.env.VITE_GEOAPIFY_API_KEY;
 export async function searchLocations(query) {
   if (!query) return [];
 
+  const region = localStorage.getItem("searchRegion") || "india";
+
   const url =
-  `https://api.geoapify.com/v1/geocode/autocomplete?` +
-  `text=${encodeURIComponent(query)}` +
-  `&bias=countrycode:in` +
-  `&limit=6` +
-  `&apiKey=${API_KEY}`;
+    `https://api.geoapify.com/v1/geocode/autocomplete?` +
+    `text=${encodeURIComponent(query)}` +
+    `${region === "india" ? "&bias=countrycode:in" : ""}` +
+    `&limit=6` +
+    `&apiKey=${API_KEY}`;
 
   const res = await fetch(url);
   const data = await res.json();

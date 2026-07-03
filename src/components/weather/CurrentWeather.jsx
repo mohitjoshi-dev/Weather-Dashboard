@@ -1,7 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Droplets, Wind } from "lucide-react";
- import useWeather from "@/hooks/useWeather";
+import useWeather from "@/hooks/useWeather";
 import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
+import { useSettings } from "@/context/SettingsProvider";
 
 function CurrentWeather({ city, displayLocation }) {
 
@@ -14,6 +15,26 @@ function CurrentWeather({ city, displayLocation }) {
     if (error) {
       return <div>{error}</div>;
     }
+  
+const { tempUnit } = useSettings();
+
+const temp = tempUnit === "c"
+  ? Math.round(weather?.current?.temp_c)
+  : Math.round(weather?.current?.temp_f);
+
+const feelsLike = tempUnit === "c"
+  ? Math.round(weather?.current?.feelslike_c)
+  : Math.round(weather?.current?.feelslike_f);
+
+const high = tempUnit === "c"
+  ? Math.round(weather?.forecast?.forecastday[0].day.maxtemp_c)
+  : Math.round(weather?.forecast?.forecastday[0].day.maxtemp_f);
+
+const low = tempUnit === "c"
+  ? Math.round(weather?.forecast?.forecastday[0].day.mintemp_c)
+  : Math.round(weather?.forecast?.forecastday[0].day.mintemp_f);
+
+const unit = tempUnit === "c" ? "°C" : "°F";  
 
   return (
     <section id="home">
@@ -37,13 +58,12 @@ function CurrentWeather({ city, displayLocation }) {
         </div>
 
         
-        <div className="w-28 text-right">
+        <div className="min-w-35 text-right">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">
               High / Low
           </div>
-          <div className="text-xl font-medium text-foreground">
-            {Math.round(weather.forecast.forecastday[0].day.maxtemp_c)}° /
-            {Math.round(weather.forecast.forecastday[0].day.mintemp_c)}°
+          <div className="whitespace-nowrap text-xl font-medium text-foreground">
+            {high}{unit} / {low}{unit}
           </div>
         </div>
       </div>
@@ -74,7 +94,9 @@ function CurrentWeather({ city, displayLocation }) {
       {/* Row 3: Big Temp & Wind */}
      
       <div className="flex items-center justify-between">
-        <div className="text-7xl font-bold tracking-tight text-foreground">{Math.round(weather.current.temp_c)}°</div>
+        <div className="text-7xl font-bold tracking-tight text-foreground">
+          {temp}{unit}
+        </div>
         <div className="text-right">
         <div className="flex items-center justify-end gap-2">
           <Wind className="h-7 w-7 text-primary" />
@@ -92,7 +114,9 @@ function CurrentWeather({ city, displayLocation }) {
 
       {/* Feels Like */}
     
-      <p className="text-base text-muted-foreground">Feels like {Math.round(weather.current.feelslike_c)}°</p>
+      <p className="text-base text-muted-foreground">
+        Feels like {feelsLike}{unit}
+      </p>
 
       </div>
 

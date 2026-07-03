@@ -9,6 +9,8 @@ function WeeklyForecast({ city }) {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
+  const tempUnit = localStorage.getItem("tempUnit") || "c";
+
   const weeklyForecast = weather.forecast.forecastday;
 
   return (
@@ -51,9 +53,17 @@ function WeeklyForecast({ city }) {
 
          <p className="font-semibold">
 
-            {Math.round(day.day.maxtemp_c)}°
+            {tempUnit === "c"
+              ? Math.round(day.day.maxtemp_c)
+              : Math.round(day.day.maxtemp_f)}
+            °{tempUnit.toUpperCase()}
+
             /
-            {Math.round(day.day.mintemp_c)}°
+
+            {tempUnit === "c"
+              ? Math.round(day.day.mintemp_c)
+              : Math.round(day.day.mintemp_f)}
+            °{tempUnit.toUpperCase()}
 
         </p>
   </div>

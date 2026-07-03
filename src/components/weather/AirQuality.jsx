@@ -128,7 +128,7 @@ function AirQuality({ city }) {
         Air Quality Overview
       </p>
 
-     <div className="flex-1 mt-4 grid grid-cols-[170px_1fr] gap-8 items-center">
+     <div className="flex-1 mt-4 grid grid-cols-[180px_1fr] gap-8 items-center">
     
     <AQIGauge
       value={aqi}
@@ -136,7 +136,7 @@ function AirQuality({ city }) {
       color={status.color}
     />
 
-    <div className="grid grid-cols-2 gap-y-6">
+    <div className="grid grid-cols-2 gap-x-10 gap-y-8">
 
         <AQIItem label="PM2.5" value={air.pm2_5.toFixed(1)} />
 

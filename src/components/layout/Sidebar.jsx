@@ -1,9 +1,7 @@
 import { CloudSun, House, MapPinned, MoonStar, Sun, Settings, UserCircle,} from "lucide-react";
 import { useTheme } from "@/context/ThemeProvider";
 
-
-function Sidebar() {
-const { theme, toggleTheme } = useTheme();
+function Sidebar({ setSettingsOpen }) {const { theme, toggleTheme } = useTheme();
 
   return (
     
@@ -48,12 +46,8 @@ const { theme, toggleTheme } = useTheme();
         </button>
 
         <button
-          onClick={() =>
-            document.getElementById("settings")?.scrollIntoView({
-              behavior: "smooth",
-            })
-          }
-          className="rounded-xl p-3 text-slate-400 transition hover:bg-secondary hover:text-foreground" >
+          onClick={() => setSettingsOpen(true)}
+          className="rounded-xl p-3 text-slate-400 transition hover:bg-secondary hover:text-foreground">
           <Settings size={22} />
         </button>
 
@@ -63,7 +57,7 @@ const { theme, toggleTheme } = useTheme();
       <div className="rounded-full bg-slate-700 p-2">
         <UserCircle className="h-8 w-8 text-foreground" />
       </div>
-
+    
     </aside>
   );
 }
