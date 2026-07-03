@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
- import useWeather from "@/hooks/useWeather";
+import useWeather from "@/hooks/useWeather";
 import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
+import { useSettings } from "@/context/SettingsProvider";
 
 
 {/* created array for easiness */}
@@ -11,6 +12,8 @@ const { weather, loading, error } = useWeather(city);
 
 if (loading) return <div>Loading...</div>;
 if (error) return <div>{error}</div>;
+
+const { tempUnit, timeFormat } = useSettings();
 
 const currentHour = new Date().getHours();
 
@@ -47,7 +50,8 @@ const hourlyForecast = [...todayHours, ...tomorrowHours].slice(0, 4);
               ? "NOW"
               : new Date(item.time).toLocaleTimeString([], {
                   hour: "numeric",
-                  hour12: true,
+                  minute: "2-digit",
+                  hour12: timeFormat === "12",
                 })}
             </p>
             </div>
@@ -61,7 +65,10 @@ const hourlyForecast = [...todayHours, ...tomorrowHours].slice(0, 4);
             </div>
 
             <h3 className="text-xl font-semibold">
-              {Math.round(item.temp_c)}°
+              {tempUnit === "c"
+                ? Math.round(item.temp_c)
+                : Math.round(item.temp_f)}
+              °{tempUnit.toUpperCase()}
             </h3>
 
             <p className="mt-2 h-12 text-[11px] text-center leading-4 text-muted-foreground">
