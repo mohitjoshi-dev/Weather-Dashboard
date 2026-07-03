@@ -2,18 +2,18 @@ import { Card } from "@/components/ui/card";
 import useWeather from "@/hooks/useWeather";
 import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
 import { useSettings } from "@/context/SettingsProvider";
-
+import ForecastSkeleton from "@/components/skeletons/ForecastSkeleton";
 
 {/* created array for easiness */}
 
 
 function Forecast({city}) {
 const { weather, loading, error } = useWeather(city);
+const { tempUnit, timeFormat } = useSettings();
 
-if (loading) return <div>Loading...</div>;
+if (loading) return <ForecastSkeleton />;
 if (error) return <div>{error}</div>;
 
-const { tempUnit, timeFormat } = useSettings();
 
 const currentHour = new Date().getHours();
 
