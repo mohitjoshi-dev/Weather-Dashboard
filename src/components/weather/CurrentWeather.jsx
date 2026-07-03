@@ -3,20 +3,21 @@ import { Droplets, Wind } from "lucide-react";
 import useWeather from "@/hooks/useWeather";
 import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
 import { useSettings } from "@/context/SettingsProvider";
+import CurrentWeatherSkeleton from "@/components/skeletons/CurrentWeatherSkeleton";
 
 function CurrentWeather({ city, displayLocation }) {
 
   const { weather, loading, error } = useWeather(city);
+  const { tempUnit } = useSettings();
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <CurrentWeatherSkeleton />;
     }
 
     if (error) {
       return <div>{error}</div>;
     }
   
-const { tempUnit } = useSettings();
 
 const temp = tempUnit === "c"
   ? Math.round(weather?.current?.temp_c)

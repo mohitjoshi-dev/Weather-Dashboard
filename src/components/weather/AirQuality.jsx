@@ -2,7 +2,7 @@ import useWeather from "@/hooks/useWeather";
 import AQIGauge from "./AQIGauge";
 import { Card } from "@/components/ui/card";
 import { CheckCircle2, AlertTriangle } from "lucide-react";
-
+import AirQualitySkeleton from "@/components/skeletons/AirQualitySkeleton";
 
 function AQIItem({ label, value }) {
 
@@ -112,7 +112,7 @@ function AirQuality({ city }) {
 
   const { weather, loading, error } = useWeather(city);
 
-  if (loading) return null;
+  if (loading) return <AirQualitySkeleton />;
   if (error) return null;
 
   const air = weather.current.air_quality;

@@ -1,15 +1,16 @@
 import { Card } from "@/components/ui/card";
 import useWeather from "@/hooks/useWeather";
 import AnimatedWeatherIcon from "./AnimatedWeatherIcon";
+import { useSettings } from "@/context/SettingsProvider";
+import WeeklyForecastSkeleton from "@/components/skeletons/WeeklyForecastSkeleton";
 
 function WeeklyForecast({ city }) {
 
   const { weather, loading, error } = useWeather(city);
+  const { tempUnit } = useSettings();
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <WeeklyForecastSkeleton />;
   if (error) return <div>{error}</div>;
-
-  const tempUnit = localStorage.getItem("tempUnit") || "c";
 
   const weeklyForecast = weather.forecast.forecastday;
 
